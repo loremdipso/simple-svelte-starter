@@ -1,3 +1,5 @@
+Based off: https://github.com/baileyherbert/svelte-webpack-starter
+
 # Svelte Webpack Starter
 
 A starter template for [Svelte](https://svelte.dev) that comes preconfigured with Webpack, TypeScript, SCSS, Babel,
@@ -27,7 +29,7 @@ Pull the template files with [`degit`](https://github.com/Rich-Harris/degit) and
 **🚀 Webpack 5 (recommended)**
 
 ```bash
-npx degit baileyherbert/svelte-webpack-starter
+npx degit loremdipso/simple-svelte-starter
 npm install
 ```
 
