@@ -1,33 +1,86 @@
 <script lang="ts">
-	let name: string = "world";
-	import GithubCorner from "./GithubCorner.svelte";
+	import { onMount } from "svelte";
+	onMount(() => {
+		// force-reset scroll top, since for some reason browsers remember this
+		document.body.scrollTop = 0;
+	});
+
+	import GithubCorner from "./common/GithubCorner.svelte";
 </script>
 
-<main>
-	<GithubCorner href="https://github.com/loremdipso/secret_santa" />
-	<h1>Hello {name}!</h1>
-	<p>
-		Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-		how to build Svelte apps.
-	</p>
+<svelte:head>
+	<!-- Material Icons -->
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	/>
+	<!-- Roboto -->
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700"
+	/>
+	<!-- Roboto Mono -->
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+	/>
+</svelte:head>
+
+<main class="pb-32 fade-in">
+	<header
+		class="relative slide-in-from-top bg-primary-300 dark:bg-black flex flex-wrap h-16 items-center justify-center left-0 p-0 shadow top-0 w-full z-20"
+	>
+		<h6 class="select-none pl-3 tracking-widest text-lg">
+			<a href="." class="text-white">Hello world!</a>
+		</h6>
+
+		<GithubCorner
+			href="https://github.com/loremdipso/TODO"
+			position="topRight"
+			small
+		/>
+	</header>
 </main>
 
 <style lang="scss">
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	:global(html) {
+		height: 100vh;
+		overflow: hidden;
+	}
 
-		h1 {
-			color: #ff3e00;
-			text-transform: uppercase;
-			font-size: 4em;
-			font-weight: 100;
+	:global(body) {
+		height: 100%;
+		overflow-y: scroll;
+		overflow-x: auto;
+	}
+
+	:global(a) {
+		// TODO: figure out why this doesn't work
+		// @apply text-blue-200;
+		color: rgba(29, 142, 241, 1);
+	}
+
+	.slide-in-from-top {
+		animation: 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94) 0s 1 SlideDown;
+	}
+	@keyframes SlideDown {
+		0% {
+			transform: translate3d(0, -100%, 0);
 		}
+		100% {
+			transform: translateZ(0);
+		}
+	}
 
-		@media (min-width: 640px) {
-			max-width: none;
+	.fade-in {
+		animation: 1s ease-out 0s 1 FadeIn;
+	}
+	@keyframes FadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
 		}
 	}
 </style>
