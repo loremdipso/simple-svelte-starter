@@ -8,6 +8,9 @@ import typescript from '@rollup/plugin-typescript';
 import scss from 'rollup-plugin-scss';
 import replace from "@rollup/plugin-replace";
 import smelte from 'smelte/rollup-plugin-smelte';
+import { visualizer } from 'rollup-plugin-visualizer';
+import alias from '@rollup/plugin-alias';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -46,6 +49,17 @@ export default {
 			preventAssignment: true
 		}),
 
+		alias({
+			// NOTE: this is a hacky workaround. Svelte doesn't respect typescript's
+			// 'paths', so we have to do it here
+			entries: [
+				{
+					find: '@components',
+					replacement: path.resolve('src', 'components'),
+				},
+			]
+		}),
+
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
@@ -62,10 +76,10 @@ export default {
 
 		smelte({
 			purge: production,
-			output: "docs/global.css", // it defaults to static/global.css which is probably what you expect in Sapper
+			output: "docs/global.css",
 			postcss: [], // Your PostCSS plugins
-			whitelist: [], // Array of classnames whitelisted from purging
-			whitelistPatterns: [
+			allowlist: [], // Array of classnames whitelisted from purging
+			allowlistPatterns: [
 				// /dark.bg-/,
 				/^bg-/,
 			], // Same as above, but list of regexes
@@ -110,7 +124,10 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser()
+		production && terser(),
+
+		// Get some stats on our build
+		production && visualizer(),
 	],
 	watch: {
 		clearScreen: false
